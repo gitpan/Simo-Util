@@ -1,0 +1,12 @@
+Build.PL
+Changes
+lib/Simo/Util.pm
+MANIFEST
+README
+t/00-load.t
+t/01-o.t
+t/boilerplate.t
+t/pod-coverage.t
+t/pod.t
+Makefile.PL
+META.yml
