@@ -10,6 +10,10 @@ my $builder = Module::Build->new(
     build_requires => {
         'Test::More' => 0,
     },
+    requires => {
+        'Simo::Constrain' => 0,
+        'Simo::Wrapper' => 0,
+    },
     add_to_cleanup      => [ 'Simo-Util-*' ],
     create_makefile_pl => 'traditional',
 );

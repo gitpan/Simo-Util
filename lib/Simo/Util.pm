@@ -1,6 +1,6 @@
 package Simo::Util;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.01_02';
 
 use warnings;
 use strict;
@@ -11,7 +11,7 @@ use Carp;
 use Exporter;
 our @ISA = qw( Exporter );
 
-our @EXPORT = qw( o );
+our @EXPORT_OK = qw( o );
 
 sub o{
     return Simo::Wrapper->create( obj => $_[0] );
@@ -23,7 +23,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.01_01
+Version 0.01_02
 
 =cut
 
