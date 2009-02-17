@@ -1,12 +1,10 @@
 package Simo::Util;
 
-our $VERSION = '0.01_02';
+our $VERSION = '0.01_03';
 
 use warnings;
 use strict;
-use Simo::Constrain qw( is_class_name is_object );
 use Simo::Wrapper;
-use Carp;
 
 use Exporter;
 our @ISA = qw( Exporter );
@@ -23,7 +21,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.01_02
+Version 0.01_03
 
 =cut
 
