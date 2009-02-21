@@ -1,6 +1,6 @@
 package Simo::Util;
 
-our $VERSION = '0.01_04';
+our $VERSION = '0.0201';
 
 use warnings;
 use strict;
@@ -34,9 +34,33 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.01_04
+Version 0.0201
 
 =cut
+
+=head1 DESCRIPTION
+
+Simo::Util is Utitly class for Simo.
+
+This provide some functionality to Simo.
+
+=over 4
+
+=item 1. Helper method to manipulate object
+
+o function 
+
+=item 2. Structured error system
+
+err function
+
+=back
+
+=cut
+
+=head1 CAUTION
+
+Simo::Util is yet experimental stage.
 
 =head1 SYNOPSIS
 
@@ -54,6 +78,25 @@ Version 0.01_04
         'sort' => [ 'desc' ],
         'get_result'
     );
+    
+    
+    
+    use Simo::Util qw( err );
+    
+    # create structured error string
+    croak err( type => 'err_type', msg => 'message', a => 'some1', b => 'some2' );
+    
+    # check error
+    if( err ){
+        if( err->type eq 'err_type' ){
+            my $msg = err->msg;
+            my $pos = err->pos; # error position, which 'croak' create.
+            my $info = err->info; # other than type, msg, pos is packed into info.
+            
+            my $a = $info->{ a };
+            my $b = $ingo->{ b };
+        }
+    }
 
 =head1 EXPORT
 
@@ -61,7 +104,7 @@ By default, no funcion is exported.
 
 All functions can be exported. 
 
-    use Simo::Util qw( o );
+    use Simo::Util qw( o err );
 
 =head1 o() functions
 
@@ -128,6 +171,60 @@ You can get last method return value.
 =cut
 
 =head1 err() function
+
+=head2 export err function
+
+    use Simo::Util qw( err );
+
+=head2 Create structured error string
+
+Structured error string is like
+
+    "Error: { type => 'err_type', msg => 'message' }"
+
+err function create structured error string
+
+    my $err_str
+        = err( type => 'err_type', msg => 'message', a => 'some1', b => 'some2' );
+
+This is same as
+
+    my $err_str = Simo::Error->create_err_str( 
+        type => 'err_type',
+        msg => 'message',
+        a => 'some1',
+        b => 'some2'
+    );
+
+See also L<Simo::Error>
+
+=head2 Parse error string and get error object;
+
+err function called no argument return error object.
+
+    my $err_obj = err;
+
+$err_obj is L<Simo::Error> instance;
+
+This is same as
+
+    my $err_obj = Simo::Error->create_from_err_str;
+
+See also L<Simo::Error>
+
+The following is sample
+
+    # check error
+    if( err ){
+        if( err->type eq 'err_type' ){
+            my $msg = err->msg;
+            my $pos = err->pos; # error position, which 'croak' create.
+            my $info = err->info; # other than type, msg, pos is packed into info.
+            
+            my $a = $info->{ a };
+            my $b = $ingo->{ b };
+        }
+    }
 
 =cut
 

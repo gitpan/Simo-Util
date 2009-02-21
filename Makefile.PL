@@ -9,7 +9,8 @@ WriteMakefile
           'PREREQ_PM' => {
                            'Test::More' => 0,
                            'Simo::Error' => 0,
-                           'Simo::Wrapper' => 0
+                           'Simo::Wrapper' => 0,
+                           'Carp' => 0
                          }
         )
 ;
