@@ -1,18 +1,31 @@
 package Simo::Util;
 
-our $VERSION = '0.01_03';
+our $VERSION = '0.01_04';
 
 use warnings;
 use strict;
 use Simo::Wrapper;
+use Simo::Error;
 
 use Exporter;
 our @ISA = qw( Exporter );
 
-our @EXPORT_OK = qw( o );
+our @EXPORT_OK = qw( o err );
 
 sub o{
     return Simo::Wrapper->create( obj => $_[0] );
+}
+
+sub err{
+    if( @_ ){
+        return Simo::Error->create_err_str( @_ );
+    }
+    else{
+        my $err_str = $@;
+        my $err_obj = Simo::Error->create_from_err_str( $err_str );
+        $@ = $err_str;
+        return $err_obj;
+    }
 }
 
 =head1 NAME
@@ -21,7 +34,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.01_03
+Version 0.01_04
 
 =cut
 
@@ -111,6 +124,10 @@ You can get last method return value.
 
 =head2 new
 
+
+=cut
+
+=head1 err() function
 
 =cut
 

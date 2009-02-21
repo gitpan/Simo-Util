@@ -11,8 +11,9 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     requires => {
-        'Simo::Constrain' => 0,
         'Simo::Wrapper' => 0,
+        'Simo::Error' => 0,
+        'Carp' => 0,
     },
     add_to_cleanup      => [ 'Simo-Util-*' ],
     create_makefile_pl => 'traditional',
