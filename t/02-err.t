@@ -7,15 +7,8 @@ use Simo::Error;
 use Carp;
 
 {
-    my $err_str = err( type => 'err_type', msg => 'message', a => '1' );
-    my $err_str2 = Simo::Error->create_err_str( type => 'err_type', msg => 'message', a => '1' );
-    
-    is( $err_str, $err_str2, 'err() is Simo::Error->create_err_str()' );
-}
-
-{
     eval{
-        croak err( type => 'err_type', msg => 'message', a => '1' );
+        Simo::Error->throw( type => 'err_type', msg => 'message', info => { a => '1' } );
     };
 
     my $err_obj = err;
@@ -23,6 +16,21 @@ use Carp;
     is( $err_obj->msg, 'message', 'err_obj msg' );
     like( $err_obj->pos, qr/ at /, 'err_obj pos' );
     is_deeply( $err_obj->info, { a => 1 }, 'err_obj info' );
+    
+    my $second_err = err;
+    
+    my $second_err_obj = err;
+    cmp_ok( $err_obj->info, '==', $second_err_obj->info, 'same error' );
+    
+    $@ = undef;
+    
+    ok( !err, '$@ is undef' );
+    
+    $@ = "aaa";
+    
+    my $no_simo_err = err;
+    is_deeply( [ $no_simo_err->type, $no_simo_err->msg, $no_simo_err->pos, $no_simo_err->info ],
+               [ 'unknown', 'aaa', '', {} ], 'no Simo::Error' );
 }
 
 

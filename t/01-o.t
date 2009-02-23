@@ -10,6 +10,6 @@ package main;
 
 use Simo::Util qw( o );
 
-my $ret = o('T1')->new->run_methods( 'm1' );
+my $ret = o('T1')->build->run_methods( 'm1' );
 is( $ret, 1, 'success' );
 
