@@ -11,8 +11,8 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     requires => {
-        'Simo::Wrapper' => 0,
-        'Simo::Error' => 0,
+        'Simo::Wrapper' => 0.0207,
+        'Simo::Error' => 0.0205,
         'Carp' => 0,
     },
     add_to_cleanup      => [ 'Simo-Util-*' ],

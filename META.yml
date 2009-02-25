@@ -1,6 +1,6 @@
 ---
 name: Simo-Util
-version: 0.0202
+version: 0.0203
 author:
   - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
 abstract: Utility Class for Simo
@@ -9,14 +9,14 @@ resources:
   license: ~
 requires:
   Carp: 0
-  Simo::Error: 0
-  Simo::Wrapper: 0
+  Simo::Error: 0.0205
+  Simo::Wrapper: 0.0207
 build_requires:
   Test::More: 0
 provides:
   Simo::Util:
     file: lib/Simo/Util.pm
-    version: 0.0202
+    version: 0.0203
 generated_by: Module::Build version 0.31012
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

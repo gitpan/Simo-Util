@@ -1,6 +1,6 @@
 package Simo::Util;
 
-our $VERSION = '0.0202';
+our $VERSION = '0.0203';
 
 use warnings;
 use strict;
@@ -40,7 +40,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.0202
+Version 0.0203
 
 =cut
 
@@ -88,9 +88,6 @@ Simo::Util is yet experimental stage.
     
     
     use Simo::Util qw( err );
-    
-    # create structured error string
-    croak err( type => 'err_type', msg => 'message', a => 'some1', b => 'some2' );
     
     # check error
     if( err ){
@@ -171,52 +168,15 @@ You can omit args.
 
 You can get last method return value.
 
-=head2 new
-
-
-=cut
-
 =head1 err() function
 
 =head2 export err function
 
     use Simo::Util qw( err );
 
-=head2 Create structured error string
-
-Structured error string is like
-
-    "Error: { type => 'err_type', msg => 'message' }"
-
-err function create structured error string
-
-    my $err_str
-        = err( type => 'err_type', msg => 'message', a => 'some1', b => 'some2' );
-
-This is same as
-
-    my $err_str = Simo::Error->create_err_str( 
-        type => 'err_type',
-        msg => 'message',
-        a => 'some1',
-        b => 'some2'
-    );
-
 See also L<Simo::Error>
 
-=head2 Parse error string and get error object;
-
-err function called no argument return error object.
-
-    my $err_obj = err;
-
-$err_obj is L<Simo::Error> instance;
-
-This is same as
-
-    my $err_obj = Simo::Error->create_from_err_str;
-
-See also L<Simo::Error>
+=head2 get error object;
 
 The following is sample
 

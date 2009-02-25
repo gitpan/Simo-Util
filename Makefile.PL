@@ -8,8 +8,8 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Simo/Util.pm',
           'PREREQ_PM' => {
                            'Test::More' => 0,
-                           'Simo::Error' => 0,
-                           'Simo::Wrapper' => 0,
+                           'Simo::Error' => '0.0205',
+                           'Simo::Wrapper' => '0.0207',
                            'Carp' => 0
                          }
         )
