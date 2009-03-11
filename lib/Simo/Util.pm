@@ -1,6 +1,6 @@
 package Simo::Util;
 
-our $VERSION = '0.0203';
+our $VERSION = '0.0204';
 
 use warnings;
 use strict;
@@ -40,7 +40,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.0203
+Version 0.0204
 
 =cut
 
@@ -48,19 +48,7 @@ Version 0.0203
 
 Simo::Util is Utitly class for Simo.
 
-This provide some functionality to Simo.
-
-=over 4
-
-=item 1. Helper method to manipulate object
-
-o function 
-
-=item 2. Structured error system
-
-err function
-
-=back
+This class provide some utility function for Simo.
 
 =cut
 
@@ -68,24 +56,18 @@ err function
 
 Simo::Util is yet experimental stage.
 
+Please wait until this is stable.
+
 =head1 SYNOPSIS
 
     use Simo::Util qw( o );
     
-    my( $title, $author ) = o($book)->get_attrs( 'title', 'author' );
+    my( $title, $author ) = o($book)->get_values( 'title', 'author' );
     
-    my %hash = o($book)->get_attrs_as_hash( 'title', 'author' );
-    my $hash_ref = o($book)->get_attrs_as_hash( 'title', 'author' );
+    my %hash = o($book)->get_hash( 'title', 'author' );
+    my $hash_ref = o($book)->get_hash( 'title', 'author' );
     
-    o($book)->set_attrs( title => 'Simple OO', author => 'kimoto' );
-    
-    my $result = o($book_list)->run_methods(
-        'select' => [ type => 'Commic' ],
-        'sort' => [ 'desc' ],
-        'get_result'
-    );
-    
-    
+    o($book)->set_values( title => 'Simple OO', author => 'kimoto' );
     
     use Simo::Util qw( err );
     
@@ -93,11 +75,15 @@ Simo::Util is yet experimental stage.
     if( err ){
         if( err->type eq 'err_type' ){
             my $msg = err->msg;
-            my $pos = err->pos; # error position, which 'croak' create.
-            my $info = err->info; # other than type, msg, pos is packed into info.
+            my $pos = err->pos;
+            my $pkg = err->pkg;
+            my $attr = err->attr;
+            my $val = err->val;
             
-            my $a = $info->{ a };
-            my $b = $ingo->{ b };
+            my $a = err->info->{ a };
+            my $b = err->ingo->{ b };
+            
+            # do something
         }
     }
 
@@ -109,88 +95,66 @@ All functions can be exported.
 
     use Simo::Util qw( o err );
 
-=head1 o() functions
+=head1 FUCNTION
 
-o() is object wrapper.
+=head2 o
 
-wrapped object use useful methods provided by Simo::Wrapper.
+o($obj) is equel to Simo::Wrapper->create($obj).
 
-=head1 Simo::Wrapper methods
+For exsample
 
-=head2 get_attrs
-
-You can get multiple attrs value.
-
-    my( $title, $author ) = o($book)->get_attrs( 'title', 'author' );
-
-=head2 get_attrs_as_hash
-
-You can get multiple attrs value as hash or hash ref.
-
-    my %hash = o($book)->get_attrs_as_hash( 'title', 'author' );
-
-or
-
-    my $hash_ref = o($book)->get_attrs_as_hash( 'title', 'author' );
-
-=head2 set_attrs
-
-You can set multiple attrs valule.
-
-    o($book)->set_attrs( title => 'Simple OO', author => 'kimoto' );
+    my %hash = o($book)->get_hash( 'title', 'author' );
     
-This method return wrapped object. so you can call method continuous.
+equel to
 
-    o($book)->set_attrs( title => 'good news' )->run_methods( 'sort' );
-
-=head2 run_methods
-
-This run some methods continuous.
-
-    my $result = o($book_list)->run_methods(
-        'select' => [ type => 'Commic' ],
-        'sort' => [ 'desc' ],
-        'get_result'
-    );
+    my %hash = Simo::Wrapper->create($book)->get_hash( 'title', 'author' );
     
-Method args must be array ref. Please be carefull not to specify scalar or list.
+o function is prepare to use Simo::Wrapper object in easy way.
 
-    my $result = o($book_list)->run_methods(
-        'select' => ( type => 'Commic' ), # this is not work.
-        'sort' => 'desc', # this is also not work.
-    );
+If you know all methods, see L<Simo::Wrapper> document.
 
-You can omit args.
+Many convenient methods is prepared for a object.
 
-    my $result = o($book_list)->run_methods(
-        'get_result' # omit args
-    );
+=head2 err
 
-You can get last method return value.
+err function convert $@ to Simo::Error object.
 
-=head1 err() function
+If $@ is already Simo::Error object, this function do nothing.
 
-=head2 export err function
+If you accesse $@ using err function, You do not have to distinguish that $@ is string or Simo::Error object.
 
-    use Simo::Util qw( err );
+The following is eneral sample using o function and err function.
 
-See also L<Simo::Error>
+new_and_validate method construct objcet and validate its values.
+and check error using err function. 
 
-=head2 get error object;
-
-The following is sample
-
-    # check error
+    use Simo::Util( o err );
+    
+    my $book = eval{
+        o('Book')->new_and_validate( 
+            { title => 'aaaaaaaaa' },
+            { title => sub { length $_ < 5 } }
+        );
+    };
+    
     if( err ){
-        if( err->type eq 'err_type' ){
+        if( err->attr eq 'title' ){
+            my $type = err->type;
             my $msg = err->msg;
-            my $pos = err->pos; # error position, which 'croak' create.
-            my $info = err->info; # other than type, msg, pos is packed into info.
+            my $pos = err->pos;
+            my $pkg = err->pkg;
+            my $val = err->val;
             
-            my $a = $info->{ a };
-            my $b = $ingo->{ b };
+            my $a = err->info->{ a };
+            my $b = err->ingo->{ b };
+            
+            # do something
         }
     }
+
+type, msg, pos, pkg, attr,val is accessors of Simo::Error object.
+
+See also L<Simo::Error>
 
 =cut
 
@@ -203,9 +167,6 @@ Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 Please report any bugs or feature requests to C<bug-simo-util at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Simo-Util>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
@@ -235,10 +196,6 @@ L<http://cpanratings.perl.org/d/Simo-Util>
 L<http://search.cpan.org/dist/Simo-Util/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
-
 
 =head1 COPYRIGHT & LICENSE
 
