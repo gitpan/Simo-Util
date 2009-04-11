@@ -1,6 +1,6 @@
 package Simo::Util;
 
-our $VERSION = '0.0204';
+our $VERSION = '0.0205';
 
 use warnings;
 use strict;
@@ -16,20 +16,14 @@ sub o{
     return Simo::Wrapper->create( obj => $_[0] );
 }
 
-my $old_err = '';
-my $err_obj_cash;
 sub err{
     return unless $@;
-    return $err_obj_cash if $old_err eq "$@";
     
-    $old_err = "$@";
     my $err = $@;
     
     my $is_simo_err = eval{ $err->isa( 'Simo::Error' ) };
-    
     my $simo_error = $is_simo_err ? $err : Simo::Error->new( msg => "$err", pos => '' );
     
-    $err_obj_cash = $simo_error;
     $@ = $err;
     return $simo_error;
 }
@@ -40,7 +34,7 @@ Simo::Util - Utility Class for Simo
 
 =head1 VERSION
 
-Version 0.0204
+Version 0.0205
 
 =cut
 
