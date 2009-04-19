@@ -1,5 +1,3 @@
-#!perl -T
-
 use Test::More 'no_plan';
 
 package T1;
@@ -10,6 +8,7 @@ package main;
 
 use Simo::Util qw( o );
 
-my $ret = o('T1')->build->run_methods( 'm1' );
-is( $ret, 1, 'success' );
+my $o = o('T1');
+is( $o->obj, 'T1' );
+isa_ok( $o, 'Simo::Wrapper' );
 
